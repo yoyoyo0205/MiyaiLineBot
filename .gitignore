@@ -1,0 +1,2 @@
+# samconfig.toml をコミット対象から除外
+samconfig.toml
