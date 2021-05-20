@@ -4,11 +4,12 @@
 
 import os
 
+
 from linebot import (
     LineBotApi, WebhookHandler
 )
 from linebot.models import (
-    MessageEvent, TextMessage, TextSendMessage, ImageMessage,
+    MessageEvent, TextMessage, TextSendMessage, ImageMessage
 )
 
 import boto3
@@ -38,7 +39,8 @@ def handle_text_message(event):
 
     line_bot_api.reply_message(
         event.reply_token,
-        TextSendMessage(text=input_text+'だみっ'))
+        TextSendMessage(text=input_text+'だみっ')
+    )
 
 @handler.add(MessageEvent, message=ImageMessage)
 def handle_image_message(event):
@@ -56,11 +58,42 @@ def handle_image_message(event):
                                       Attributes=["ALL"])
     print(response)
 
+    # メッセージを決める。
+    if all_happy(response):
+        message = "嬉しそうだみっ！"
+    else:
+        message = "んーーみ！"
 
     # 返答を送信する
     line_bot_api.reply_message(
         event.reply_token,
-        TextSendMessage(text=str(response)[:1000]))
+        TextSendMessage(text=message)
+    )
 
     # file_pathの画像を削除
     os.remove(file_path)
+
+
+# 以下、定義
+def all_happy(result):
+    """ 検出した顔がすべてHAPPYなら、Trueを返す"""
+    for detail in result["FaceDetails"]:
+        if most_confident_emotion(detail["Emotions"]) != "HAPPY":
+            return False
+    return True
+
+
+def most_confident_emotion(emotions):
+    """
+    もっとも確信度が高い感情を返す
+    :param emotions:
+    :return:
+    """
+    max_conf = 0
+    result = ""
+    for e in emotions:
+        if max_conf < e["Confidence"]:
+            max_conf = e["Confidence"]
+            result = e["Type"]
+    return result
+

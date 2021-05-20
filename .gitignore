@@ -1,2 +1,4 @@
 # samconfig.toml をコミット対象から除外
 samconfig.toml
+# aws-sam情報は除外
+.aws-sam/*
