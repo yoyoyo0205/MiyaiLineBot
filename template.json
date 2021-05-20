@@ -16,6 +16,7 @@
             "LINE_CHANNEL_ACCESS_TOKEN": {"Ref": "LineChannelAccessToken"},
             "LINE_CHANNEL_SECRET": {"Ref": "LineChannelSecret"}
         }},
+        "Policies": {"RekognitionDetectOnlyPolicy": {}},
         "Events": {
           "API": {
             "Type": "Api",

@@ -21,6 +21,8 @@ Resources:
             Ref: LineChannelAccessToken
           LINE_CHANNEL_SECRET:
             Ref: LineChannelSecret
+      Policies:
+        RekognitionDetectOnlyPolicy: {}
       Events:
         API:
           Type: Api
